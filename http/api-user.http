@@ -1,0 +1,63 @@
+###auth
+POST {{protocol}}{{host}}/api/v1/auth/login
+Content-Type: application/json
+
+{
+  "login": "1",
+  "password": "123"
+}
+
+> {% client.global.set("auth_token", response.body.accessToken); %}
+
+###Get by id
+GET {{protocol}}{{host}}/api/v1/users/1
+Authorization: Bearer {{auth_token}}
+
+###Get filtered in pages
+GET {{protocol}}{{host}}/api/v1/users?name=user1&page=0&size=2
+Authorization: Bearer {{auth_token}}
+
+###Add email
+POST {{protocol}}{{host}}/api/v1/users/1/emails/email223%40host.com
+Content-Type: application/json
+Authorization: Bearer {{auth_token}}
+
+###Remove email
+DELETE {{protocol}}{{host}}/api/v1/users/1/emails/email22%40host.com
+Content-Type: application/json
+Authorization: Bearer {{auth_token}}
+
+
+###Add phone
+POST {{protocol}}{{host}}/api/v1/users/1/phones/12345678901
+Content-Type: application/json
+Authorization: Bearer {{auth_token}}
+
+###Remove phone
+DELETE {{protocol}}{{host}}/api/v1/users/1/phones/12345678901
+Content-Type: application/json
+Authorization: Bearer {{auth_token}}
+
+
+###transfer
+POST {{protocol}}{{host}}/api/v1/users/transfer
+Content-Type: application/json
+Authorization: Bearer {{auth_token}}
+
+{
+  "recipientId": 2,
+  "amount": 12.1
+}
+
+###popup
+POST {{protocol}}{{host}}/api/v1/users/1/auto-popup
+Content-Type: application/json
+Authorization: Bearer {{auth_token}}
+
+###Get emails for userId. To check caching
+GET {{protocol}}{{host}}/api/v1/users/1/emails
+Authorization: Bearer {{auth_token}}
+
+###Get phones for userId. To check caching
+GET {{protocol}}{{host}}/api/v1/users/1/phones
+Authorization: Bearer {{auth_token}}

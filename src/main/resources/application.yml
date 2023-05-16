@@ -1,0 +1,51 @@
+logging:
+  level:
+    com.dimas.com.dimas.bbbank: ${LOG_LEVEL:DEBUG}
+    org.springframework.cache: ${CACHE_LOG_LEVEL:TRACE}
+
+server:
+  port: ${TARGET_PORT:8080}
+
+spring:
+  application.name: bbbank-service
+  main.allow-bean-definition-overriding: true
+  data.redis.repositories.enabled: false
+  datasource:
+    driverClassName: org.postgresql.Driver
+    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_DATABASE:postgres}?currentSchema=${DB_SCHEMA:bbbank}
+    username: ${DB_USERNAME:postgres}
+    password: ${DB_PASSWORD:postgres}
+    type: com.zaxxer.hikari.HikariDataSource
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQL94Dialect
+        enable_lazy_load_no_trans: true
+        default_schema: ${DB_SCHEMA:bbbank}
+        generate_statistics: false
+        order_inserts: true
+        jdbc:
+          batch_size: 50
+    open-in-view: false
+  flyway:
+    enabled: true
+    schemas: ${DB_SCHEMA:bbbank}
+    user: ${DB_USERNAME:postgres}
+    password: ${DB_PASSWORD:postgres}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: [ "metrics", "health", "beans", "mappings", "monitoring", "info", "env" ]
+
+jwt:
+  secret:
+    access: qBTmv4oXFFR2GwjexDJ4t6fsIUIUhhXqlktXjXdkcyygs8nPVEwMfo29VDRRepYDVV5IkIxBMzr7OEHXEHd37w==
+    refresh: zL1HB3Pch05Avfynovxrf/kpF9O2m4NCWKJUjEp27s9J2jEG3ifiKCGylaZ8fDeoONSTJP/wAzKawB8F9rOMNg==
+
+auto-deposit:
+  cron: 0/30 * * * * *
